@@ -8,7 +8,9 @@ echo Running validation
 PACKAGES=". $(find -name '*.go' | xargs -I{} dirname {} |  cut -f2 -d/ | sort -u | grep -Ev '(^\.$|.git|.trash-cache|vendor|bin)' | sed -e 's!^!./!' -e 's!$!/...!')"
 
 echo Running: go vet
+# TODO: Check for windows
 go vet ${PACKAGES}
+
 echo Running: golint
 for i in ${PACKAGES}; do
     if [ -n "$(golint $i | grep -v 'should have comment.*or be unexported' | tee /dev/stderr)" ]; then

@@ -20,8 +20,8 @@ ENV DOCKER_URL_amd64=https://get.docker.com/builds/Linux/x86_64/docker-1.10.3 \
 
 RUN wget -O - ${!DOCKER_URL} > /usr/bin/docker && chmod +x /usr/bin/docker
 
-ENV DAPPER_ENV REPO TAG
-ENV DAPPER_SOURCE /go/src/github.com/rancher/swiss-army-knife/
+ENV DAPPER_ENV REPO TAG OS ARCH
+ENV DAPPER_SOURCE /go/src/github.com/leodotcloud/swiss-army-knife/
 ENV DAPPER_OUTPUT ./bin ./dist
 ENV DAPPER_DOCKER_SOCKET true
 ENV TRASH_CACHE ${DAPPER_SOURCE}/.trash-cache

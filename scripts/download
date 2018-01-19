@@ -1,0 +1,26 @@
+#!/bin/bash -x
+set -e
+
+cd $(dirname $0)/..
+
+# Repos
+LOGLEVEL_REPO="${LOGLEVEL_REPO:-leodotcloud}"
+
+# Tags
+LOGLEVEL_TAG="${LOGLEVEL_TAG:-v0.1}"
+
+mkdir -p downloads
+
+PACKAGE=loglevel
+echo "${PACKAGE}: REPO=${LOGLEVEL_REPO} TAG=${LOGLEVEL_TAG}"
+
+if [ ! -f downloads/${PACKAGE}-amd64-${LOGLEVEL_TAG}.tar.gz ]; then
+    echo "Downloading ${PACKAGE}-amd64-${LOGLEVEL_TAG}.tar.gz"
+    curl -sfSL https://github.com/${LOGLEVEL_REPO}/${PACKAGE}/releases/download/${LOGLEVEL_TAG}/${PACKAGE}-amd64-${LOGLEVEL_TAG}.tar.gz > downloads/${PACKAGE}-amd64-${LOGLEVEL_TAG}.tar.gz
+else
+    echo "Already downloaded: ${PACKAGE}-amd64-${LOGLEVEL_TAG}.tar.gz"
+fi
+
+cmp -s downloads/${PACKAGE}-amd64-${LOGLEVEL_TAG}.tar.gz package/${PACKAGE}.tar.gz \
+    || echo "copying to package/${PACKAGE}.tar.gz"; cp downloads/${PACKAGE}-amd64-${LOGLEVEL_TAG}.tar.gz package/${PACKAGE}.tar.gz
+

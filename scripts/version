@@ -1,5 +1,9 @@
 #!/bin/bash
 
+OS=${OS:-linux}
+OS=$(echo "${OS}" | tr '[:upper:]' '[:lower:]')
+echo "OS: ${OS}"
+
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
     DIRTY="-dirty"
 fi
@@ -9,8 +13,10 @@ GIT_TAG=$(git tag -l --contains HEAD | head -n 1)
 
 if [[ -z "$DIRTY" && -n "$GIT_TAG" ]]; then
     VERSION=$GIT_TAG
+    IMAGE_VERSION=${VERSION}
 else
     VERSION="${COMMIT}${DIRTY}"
+    IMAGE_VERSION=dev
 fi
 
 if [ -z "$ARCH" ]; then

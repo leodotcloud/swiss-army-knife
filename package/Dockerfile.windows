@@ -1,0 +1,11 @@
+FROM microsoft/nanoserver
+
+RUN mkdir C:\app
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+WORKDIR C:\app
+
+COPY swiss-army-knife.exe swiss-army-knife.exe
+
+ENTRYPOINT ["swiss-army-knife.exe"]

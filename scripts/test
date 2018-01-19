@@ -8,4 +8,10 @@ echo Running tests
 PACKAGES=". $(find -name '*.go' | xargs -I{} dirname {} |  cut -f2 -d/ | sort -u | grep -Ev '(^\.$|.git|.trash-cache|vendor|bin)' | sed -e 's!^!./!' -e 's!$!/...!')"
 
 [ "${ARCH}" == "amd64" ] && RACE=-race
-go test ${RACE} -cover -tags=test ${PACKAGES}
+
+if [ "${OS}" == "windows" ]; then
+    # TODO: Not sure if this is needed
+    GOOS=windows GOARCH=${ARCH} go test ${RACE} -cover -tags=test ${PACKAGES}
+else
+    go test ${RACE} -cover -tags=test ${PACKAGES}
+fi

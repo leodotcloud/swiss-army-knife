@@ -1,28 +1,27 @@
 swiss-army-knife
 ========
 
-A microservice that does micro things.
+Packing any application with a tiny/bare minimal base image sounds like an awesome/cool/intelligent idea, until things break and there are not tools inside the container to debug the problem at hand.
+This repo/docker image tries to solve this problem by having a different image with all possible tools needed to debug majority of the problems in a production environment.
+This image also includes a very small web application for testing/debugging purposes.
+
+## Running
+
+```
+# Run and attach to the network namespace of the container to debug
+docker run --name swiss-army-knife --net=container:${CONTAINER_ID_TO_DEBUG} -itd leodotcloud/swiss-army-knife
+
+# Exec into the tools container
+docker exec -it swiss-army-knife bash
+
+# Show off your ninja skill!
+tcpdump -i eth0 -vvv -nn -s0 -SS -XX
+```
 
 ## Building
 
 `make`
 
+If you would like to build using a custom repo and tag:
 
-## Running
-
-`./bin/swiss-army-knife`
-
-## License
-Copyright (c) 2014-2017 [Rancher Labs, Inc.](http://rancher.com)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+`REPO=your_docker_repo TAG=dev_or_sth_else make release`

@@ -3,22 +3,34 @@ set -e
 
 source $(dirname $0)/version
 
-ARCH=${ARCH:-"amd64"}
+ARCH=${ARCH:?"ARCH not set"}
 SUFFIX=""
 [ "${ARCH}" != "amd64" ] && SUFFIX="_${ARCH}"
 
 cd $(dirname $0)/../package
 
-TAG=${TAG:-${VERSION}${SUFFIX}}
-REPO=${REPO:-rancher}
+TAG=${TAG:-${IMAGE_VERSION}${SUFFIX}}
+REPO=${REPO:-leodotcloud}
+DOCKERFILE=Dockerfile
 
-if echo $TAG | grep -q dirty; then
-    TAG=dev
+if [ "${OS}" == "windows" ]; then
+    DOCKERFILE="${DOCKERFILE}.windows"
+    TAG="${TAG}-windows"
+
+    if [ ! -e ../bin/swiss-army-knife.exe ]; then
+        ../scripts/build
+    fi
+
+    cp ../bin/swiss-army-knife.exe .
+else
+    if [ ! -e ../bin/swiss-army-knife ]; then
+        ../scripts/build
+    fi
+
+    cp ../bin/swiss-army-knife .
 fi
 
-cp ../bin/swiss-army-knife .
-
 IMAGE=${REPO}/swiss-army-knife:${TAG}
-docker build -t ${IMAGE} .
+docker build -f ${DOCKERFILE} -t ${IMAGE} .
 echo ${IMAGE} > ../dist/images
 echo Built ${IMAGE}
