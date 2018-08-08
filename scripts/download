@@ -4,7 +4,7 @@ set -e
 cd $(dirname $0)/..
 
 # Repos
-LOGLEVEL_REPO="${LOGLEVEL_REPO:-leodotcloud}"
+LOGLEVEL_REPO="${LOGLEVEL_REPO:-rancher}"
 
 # Tags
 LOGLEVEL_TAG="${LOGLEVEL_TAG:-v0.1}"
