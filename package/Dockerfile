@@ -40,8 +40,13 @@ RUN apt-get update && \
     curl -sLf https://storage.googleapis.com/kubernetes-release/release/v1.9.10/bin/linux/amd64/kubectl > /usr/local/bin/kubectl-1.9 && \
     curl -sLf https://storage.googleapis.com/kubernetes-release/release/v1.10.5/bin/linux/amd64/kubectl > /usr/local/bin/kubectl-1.10 && \
     curl -sLf https://storage.googleapis.com/kubernetes-release/release/v1.11.2/bin/linux/amd64/kubectl > /usr/local/bin/kubectl-1.11 && \
-    chmod +x /usr/local/bin/kubectl* && \
+    curl -sLf https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz | tar xvzf - --strip-components=1 -C /usr/local/bin linux-amd64/helm && \
+    mv /usr/local/bin/helm /usr/local/bin/helm-2.9.1 && \
+    curl -sLf https://storage.googleapis.com/kubernetes-helm/helm-v2.10.0-linux-amd64.tar.gz | tar xvzf - --strip-components=1 -C /usr/local/bin linux-amd64/helm && \
+    mv /usr/local/bin/helm /usr/local/bin/helm-2.10.0 && \
+    chmod +x /usr/local/bin/kubectl* /usr/local/bin/helm* && \
     ln -s /usr/local/bin/kubectl-1.11 /usr/local/bin/kubectl && \
+    ln -s /usr/local/bin/helm-2.10.0 /usr/local/bin/helm && \
     mkdir /root/.kube
 
 ADD loglevel.tar.gz /usr/bin
