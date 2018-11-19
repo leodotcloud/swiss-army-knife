@@ -1,38 +1,39 @@
 FROM ubuntu:18.04
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-        tree \
-        arptables \
-        ca-certificates \
-        tmux \
-        wget \
-        curl \
-        tree \
-        iperf \
-        iptables \
-        conntrack \
-        ipset \
-        tcpdump \
-        telnet \
         arping \
-        net-tools \
+        arptables \
         bridge-utils \
-        ethtool \
-        iproute2 \
-        netcat-openbsd \
-        ipsec-tools \
-        psmisc \
-        socat \
+        ca-certificates \
+        conntrack \
+        curl \
         dnsutils \
-        vim \
+        ethtool \
+        iperf \
         iperf3 \
-        less \
-        libpcap-dev \
-        netcat \
+        iproute2 \
+        ipsec-tools \
+        ipset \
+        iptables \
         iputils-ping \
         jq \
         kmod \
-        openssl && \
+        ldap-utils \
+        less \
+        libpcap-dev \
+        net-tools \
+        netcat \
+        netcat-openbsd \
+        openssl \
+        psmisc \
+        socat \
+        tcpdump \
+        telnet \
+        tmux \
+        tree \
+        tree \
+        vim \
+        wget && \
     rm -rf /var/lib/apt/lists/* && \
     mv /usr/sbin/tcpdump /usr/bin/tcpdump && \
     curl -sLf https://get.docker.com/builds/Linux/x86_64/docker-1.10.3 > /usr/bin/docker && \
