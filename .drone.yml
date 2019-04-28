@@ -1,0 +1,23 @@
+---
+kind: pipeline
+name: default-amd64
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build
+  pull: default
+  image: rancher/dapper:v0.4.1
+  commands:
+  - dapper ci
+  privileged: true
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
+  when:
+    event:
+    - push
+    - pull_request
+    - tag
