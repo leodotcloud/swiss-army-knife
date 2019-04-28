@@ -38,7 +38,7 @@ func main() {
 		cli.StringFlag{
 			Name:   alphabetArg,
 			Usage:  "Run the web server with the given alphabet",
-			EnvVar: "NATO_ALPHABET",
+			EnvVar: "ALPHABET",
 		},
 		cli.BoolFlag{
 			Name:   useMetadataArg,
