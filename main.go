@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/leodotcloud/log"
@@ -62,6 +63,10 @@ func run(c *cli.Context) error {
 		log.SetLevelString("debug")
 	}
 
+	if c.Bool("version") {
+		fmt.Println(c.App.Version)
+		return nil
+	}
 	s, err := server.NewServer(
 		c.String(portArg),
 		c.String(metadataAddressArg),
