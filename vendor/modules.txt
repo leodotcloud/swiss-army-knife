@@ -1,0 +1,20 @@
+# github.com/Sirupsen/logrus v1.0.4
+github.com/Sirupsen/logrus
+# github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d
+github.com/cpuguy83/go-md2man/v2/md2man
+# github.com/leodotcloud/log v0.1.0
+github.com/leodotcloud/log
+github.com/leodotcloud/log/server
+# github.com/rancher/go-rancher-metadata v0.0.0-20170929155856-d2103caca587
+github.com/rancher/go-rancher-metadata/metadata
+# github.com/russross/blackfriday/v2 v2.0.1
+github.com/russross/blackfriday/v2
+# github.com/shurcooL/sanitized_anchor_name v1.0.0
+github.com/shurcooL/sanitized_anchor_name
+# github.com/urfave/cli v1.22.3
+github.com/urfave/cli
+# golang.org/x/crypto v0.0.0-20180119165957-a66000089151
+golang.org/x/crypto/ssh/terminal
+# golang.org/x/sys v0.0.0-20180117170059-2c42eef0765b
+golang.org/x/sys/unix
+golang.org/x/sys/windows
