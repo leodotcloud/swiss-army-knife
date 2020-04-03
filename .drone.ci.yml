@@ -57,7 +57,9 @@ steps:
         from_secret: DOCKERHUB_PASSWORD
       repo: leodotcloud/swiss-army-knife
       dockerfile: package/Dockerfile
-      auto_tag: true
+      tags:
+        - latest
+        - ${DRONE_TAG}
     when:
       branch:
         - master
