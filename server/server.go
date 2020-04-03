@@ -183,7 +183,9 @@ func (s *Server) Run() error {
 		return err
 	}
 	s.l = l
-	go http.Serve(l, nil)
+	go func() {
+		_ = http.Serve(l, nil)
+	}()
 
 	return nil
 }
