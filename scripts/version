@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/bin/sh
+
+# version.env file needs to be generated and sourced in
+# downstream steps as some of the images don't have git
+# and other necessary commands available
 
 OS=${OS:-linux}
 OS=$(echo "${OS}" | tr '[:upper:]' '[:lower:]')
@@ -11,14 +15,25 @@ fi
 COMMIT=$(git rev-parse --short HEAD)
 GIT_TAG=$(git tag -l --contains HEAD | head -n 1)
 
-if [[ -z "$DIRTY" && -n "$GIT_TAG" ]]; then
-    VERSION=$GIT_TAG
+if [ -z ${DIRTY+x} ] & [ -n "$GIT_TAG" ]; then
+    VERSION=${GIT_TAG}
     IMAGE_VERSION=${VERSION}
 else
     VERSION="${COMMIT}${DIRTY}"
     IMAGE_VERSION=dev
 fi
 
-if [ -z "$ARCH" ]; then
+if [ -z ${ARCH+x} ]; then
     ARCH=amd64
 fi
+
+rm -f version.env
+touch version.env
+tee -a version.env > /dev/null << EOT
+export VERSION_SET=true
+export OS=${OS}
+export VERSION=${VERSION}
+export IMAGE_VERSION=${IMAGE_VERSION}
+export ARCH=${ARCH}
+EOT
+echo "Generated version.env"

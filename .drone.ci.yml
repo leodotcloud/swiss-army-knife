@@ -1,0 +1,66 @@
+#
+# This file is used for running on CI server
+# Need to keep this in sync with .drone.yml
+#
+
+kind: pipeline
+type: docker
+name: default-amd64
+
+platform:
+  os: linux
+  arch: amd64
+
+trigger:
+  branch:
+    - master
+
+workspace:
+  base: /go
+  path: src/github.com/leodotcloud/swiss-army-knife
+
+steps:
+  - name: version
+    image: golang:1.13.9-buster
+    commands:
+      - ./scripts/version
+
+  - name: lint
+    image: golangci/golangci-lint:v1.24.0
+    commands:
+      - ./scripts/lint
+
+  - name: test
+    image: golang:1.13.9-buster
+    environment:
+      CGO_ENABLED: 0
+      GOFLAGS: -mod=vendor
+    commands:
+      - . ./version.env
+      - ./scripts/test
+
+  - name: build
+    image: golang:1.13.9-buster
+    environment:
+      CGO_ENABLED: 0
+      GOFLAGS: -mod=vendor
+    commands:
+      - . ./version.env
+      - ./scripts/build
+
+  - name: publish
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: DOCKERHUB_USERNAME
+      password:
+        from_secret: DOCKERHUB_PASSWORD
+      repo: leodotcloud/swiss-army-knife
+      dockerfile: package/Dockerfile
+      auto_tag: true
+    when:
+      branch:
+        - master
+      event:
+        - tag
+
