@@ -1,0 +1,11 @@
+run:
+  skip-dirs:
+    - vendor
+
+linters:
+  enable:
+    - goimports
+
+linters-settings:
+  govet:
+    check-shadowing: false

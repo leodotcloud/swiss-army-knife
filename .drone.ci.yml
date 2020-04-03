@@ -1,27 +1,23 @@
 #
-# This file is used for local development/builds
-# Need to keep this in sync with .drone.ci.yml
+# This file is used for running on CI server
+# Need to keep this in sync with .drone.yml
 #
 
 kind: pipeline
-type: exec
+type: docker
 name: default-amd64
 
 platform:
   os: linux
   arch: amd64
 
+trigger:
+  branch:
+    - master
+
 workspace:
   base: /go
   path: src/github.com/leodotcloud/swiss-army-knife
-
-volumes:
-  - name: docker
-    host:
-      path: /var/lib/docker
-  - name: docker_socket
-    host:
-      path: /var/run/docker.sock
 
 steps:
   - name: version
@@ -54,18 +50,17 @@ steps:
 
   - name: publish
     image: plugins/docker
-    volumes:
-      - name: docker
-        path: /var/lib/docker
-      - name: docker_socket
-        path: /var/run/docker.sock
     settings:
       username:
         from_secret: DOCKERHUB_USERNAME
       password:
         from_secret: DOCKERHUB_PASSWORD
       repo: leodotcloud/swiss-army-knife
-      tags:
-        - dev
       dockerfile: package/Dockerfile
-      dry_run: true
+      auto_tag: true
+    when:
+      branch:
+        - master
+      event:
+        - tag
+

@@ -49,7 +49,8 @@ RUN apt-get update && \
     ln -s /usr/local/bin/kubectl-1.14 /usr/local/bin/kubectl && \
     mkdir /root/.kube
 
-ADD loglevel.tar.gz /usr/bin
+ENV LOGLEVEL_TAG v0.1
+RUN curl -sfSL https://github.com/rancher/loglevel/releases/download/${LOGLEVEL_TAG}/loglevel-amd64-${LOGLEVEL_TAG}.tar.gz | tar xvzf - -C /usr/bin
 COPY swiss-army-knife /usr/bin/
 WORKDIR /root
 CMD ["swiss-army-knife"]

@@ -22,8 +22,28 @@ tcpdump -i eth0 -vvv -nn -s0 -SS -XX
 
 ## Building
 
-`make`
+This repo can be built locally using `drone` cli using `exec` pipeline type. Since, local builds use the host docker, it's necessary to mark the repo as "trusted" for the "publish" step.
 
-If you would like to build using a custom repo and tag:
+Build all steps:
+```bash
+drone exec --trusted
+```
 
-`REPO=your_docker_repo TAG=dev_or_sth_else make release`
+Build specific steps:
+```bash
+drone exec --include=lint
+drone exec --include=test
+drone exec --include=version,build
+drone exec --trusted --include=publish
+```
+
+To override and specify custom configuration, edit `custom.env` file and use:
+```bash
+drone exec --trusted --env-file=custom.env
+```
+
+For using secrets locally:
+```bash
+drone exec --secrets-file=secrets.env
+```
+
