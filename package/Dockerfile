@@ -34,7 +34,7 @@ RUN apt-get update && \
         traceroute \
         tcptraceroute \
         tree \
-        tree \
+        ngrep \
         vim \
         wget && \
     rm -rf /var/lib/apt/lists/* && \
