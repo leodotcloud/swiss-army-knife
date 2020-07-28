@@ -22,7 +22,7 @@ tcpdump -i eth0 -vvv -nn -s0 -SS -XX
 
 ## Building
 
-This repo can be built locally using `drone` cli using `exec` pipeline type. Since, local builds use the host docker, it's necessary to mark the repo as "trusted" for the "publish" step.
+This repo can be built locally using `drone` cli ([docs](https://docs.drone.io/)) using `exec` pipeline type. Since, local builds use the host docker, it's necessary to mark the repo as "trusted" for the "publish" step.
 
 Build all steps:
 ```bash
