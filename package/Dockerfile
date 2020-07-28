@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+RUN sed -i 's:^path-exclude=/usr/share/man:#path-exclude=/usr/share/man:' /etc/dpkg/dpkg.cfg.d/excludes
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
         arping \
@@ -21,6 +22,8 @@ RUN apt-get update && \
         ldap-utils \
         less \
         libpcap-dev \
+        man \
+        manpages-posix \
         mtr \
         net-tools \
         netcat \
