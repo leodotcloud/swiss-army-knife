@@ -23,7 +23,7 @@ RUN apt-get update && \
         less \
         libpcap-dev \
         man \
-        manpages-posix
+        manpages-posix \
         mtr \
         net-tools \
         netcat \
