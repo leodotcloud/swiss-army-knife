@@ -1,7 +1,9 @@
+[![Build Status](https://cloud.drone.io/api/badges/leodotcloud/swiss-army-knife/status.svg)](https://cloud.drone.io/leodotcloud/swiss-army-knife)
+[![Pulls](https://img.shields.io/docker/pulls/leodotcloud/swiss-army-knife.svg)](https://hub.docker.com/r/leodotcloud/swiss-army-knife)
+[![Twitter](https://img.shields.io/twitter/follow/leodotcloud?style=social&logo=twitter)](https://twitter.com/leodotcloud)
+
 swiss-army-knife
 ========
-
-[![Build Status](https://cloud.drone.io/api/badges/leodotcloud/swiss-army-knife/status.svg)](https://cloud.drone.io/leodotcloud/swiss-army-knife)
 
 Packing any application with a tiny/bare minimal base image sounds like an awesome/cool/intelligent idea, until things break and there are not tools inside the container to debug the problem at hand.
 This repo/docker image tries to solve this problem by having a different image with all possible tools needed to debug majority of the problems in a production environment.
