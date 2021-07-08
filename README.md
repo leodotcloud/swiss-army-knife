@@ -9,6 +9,9 @@ Packing any application with a tiny/bare minimal base image sounds like an aweso
 This repo/docker image tries to solve this problem by having a different image with all possible tools needed to debug majority of the problems in a production environment.
 This image also includes a very small web application for testing/debugging purposes.
 
+### Packages
+For Linux, see file: [package/Dockerfile](package/Dockerfile)
+
 ## Running
 
 ```

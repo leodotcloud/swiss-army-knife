@@ -16,8 +16,6 @@ var VERSION = "v0.0.0-dev"
 const (
 	appName            = "swiss-army-knife"
 	portArg            = "port"
-	useMetadataArg     = "use-rancher-metadata"
-	metadataAddressArg = "metadata-address"
 	alphabetArg        = "alphabet"
 )
 
@@ -27,11 +25,6 @@ func main() {
 	app.Version = VERSION
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:   metadataAddressArg,
-			Value:  server.DefaultMetadataAddress,
-			EnvVar: "RANCHER_METADATA_ADDRESS",
-		},
-		cli.StringFlag{
 			Name:   portArg,
 			Value:  server.DefaultServerPort,
 			EnvVar: "PORT",
@@ -40,11 +33,6 @@ func main() {
 			Name:   alphabetArg,
 			Usage:  "Run the web server with the given alphabet",
 			EnvVar: "ALPHABET",
-		},
-		cli.BoolFlag{
-			Name:   useMetadataArg,
-			Usage:  "Use Rancher metadata for querying information about self",
-			EnvVar: "USE_RANCHER_METADATA",
 		},
 		cli.BoolFlag{
 			Name:   "debug",
@@ -73,9 +61,7 @@ func run(c *cli.Context) error {
 	}
 	s, err := server.NewServer(
 		c.String(portArg),
-		c.String(metadataAddressArg),
 		c.String(alphabetArg),
-		c.Bool(useMetadataArg),
 	)
 	if err != nil {
 		log.Errorf("Error creating new server")

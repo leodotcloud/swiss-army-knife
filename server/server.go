@@ -2,26 +2,23 @@ package server
 
 import (
 	"fmt"
+	"math/rand"
 	"net"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/leodotcloud/log"
-	"github.com/rancher/go-rancher-metadata/metadata"
 )
 
 const (
-	metadataURLTemplate = "http://%v/2016-07-29"
-
 	// DefaultServerPort ...
 	DefaultServerPort = "80"
 	defaultServerPort = 80
 
-	// DefaultMetadataAddress specifies the default value to use if nothing is specified
-	DefaultMetadataAddress = "169.254.169.250"
 )
 
 type alphabet struct {
@@ -115,9 +112,7 @@ var homePageTmpl = `<html>
 type Server struct {
 	port        int
 	exitCh      chan int
-	mc          metadata.Client
 	l           net.Listener
-	useMetadata bool
 	alphabets   []alphabet
 }
 
@@ -131,28 +126,12 @@ type ErrorResponse struct {
 }
 
 // NewServer ...
-func NewServer(portStr, metadataAddress, inputAlphabet string, useMetadata bool) (*Server, error) {
-	var (
-		mc  metadata.Client
-		err error
-	)
-
-	if useMetadata {
-		log.Debugf("Waiting for metadata")
-		metadataURL := fmt.Sprintf(metadataURLTemplate, metadataAddress)
-		mc, err = metadata.NewClientAndWait(metadataURL)
-		if err != nil {
-			return nil, fmt.Errorf("Error creating metadata client: %v", err)
-		}
-	}
-
+func NewServer(portStr, inputAlphabet string) (*Server, error) {
 	exitCh := make(chan int)
 
 	return &Server{
 		port:        getServerPortToRun(portStr),
 		exitCh:      exitCh,
-		mc:          mc,
-		useMetadata: useMetadata,
 		alphabets:   getAlphabetsToUse(inputAlphabet),
 	}, nil
 }
@@ -220,13 +199,6 @@ func (s *Server) homePageHandler(w http.ResponseWriter, r *http.Request) {
 	log.Debugf("localIP: %v", localIP)
 	p.IPAddress = localIP
 
-	if s.useMetadata {
-		self, err := s.mc.GetSelfContainer()
-		if err == nil {
-			p.DockerID = self.ExternalId
-			p.RancherID = self.UUID
-		}
-	}
 	var t *template.Template
 
 	ua := r.UserAgent()
@@ -280,6 +252,11 @@ func getServerPortToRun(portStr string) int {
 	return port
 }
 
+func getRandomAlphabetIndex() int {
+	rand.Seed(time.Now().Unix())
+	return rand.Intn(len(allAlphabets))
+}
+
 func getAlphabetIndex(alphabet string) int {
 	index := rune(-1)
 	if alphabet != "" {
@@ -295,7 +272,14 @@ func getAlphabetIndex(alphabet string) int {
 
 func getAlphabetsToUse(inputAlphabet string) []alphabet {
 	var alphabets []alphabet
-	alphabetIndex := getAlphabetIndex(inputAlphabet)
+	var alphabetIndex int
+
+	if inputAlphabet == "random" || inputAlphabet == "RANDOM" {
+		log.Infof("picking a random alphabet")
+		alphabetIndex = getRandomAlphabetIndex()
+	} else {
+		alphabetIndex = getAlphabetIndex(inputAlphabet)
+	}
 	if alphabetIndex >= 0 {
 		alphabets = allAlphabets[alphabetIndex : alphabetIndex+1]
 		log.Infof("using alphabet: %v", alphabets)
