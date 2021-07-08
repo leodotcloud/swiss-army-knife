@@ -14,9 +14,9 @@ import (
 var VERSION = "v0.0.0-dev"
 
 const (
-	appName            = "swiss-army-knife"
-	portArg            = "port"
-	alphabetArg        = "alphabet"
+	appName     = "swiss-army-knife"
+	portArg     = "port"
+	alphabetArg = "alphabet"
 )
 
 func main() {

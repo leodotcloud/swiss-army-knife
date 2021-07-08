@@ -18,7 +18,6 @@ const (
 	// DefaultServerPort ...
 	DefaultServerPort = "80"
 	defaultServerPort = 80
-
 )
 
 type alphabet struct {
@@ -110,10 +109,10 @@ var homePageTmpl = `<html>
 
 // Server ...
 type Server struct {
-	port        int
-	exitCh      chan int
-	l           net.Listener
-	alphabets   []alphabet
+	port      int
+	exitCh    chan int
+	l         net.Listener
+	alphabets []alphabet
 }
 
 // ErrorResponse ...
@@ -130,9 +129,9 @@ func NewServer(portStr, inputAlphabet string) (*Server, error) {
 	exitCh := make(chan int)
 
 	return &Server{
-		port:        getServerPortToRun(portStr),
-		exitCh:      exitCh,
-		alphabets:   getAlphabetsToUse(inputAlphabet),
+		port:      getServerPortToRun(portStr),
+		exitCh:    exitCh,
+		alphabets: getAlphabetsToUse(inputAlphabet),
 	}, nil
 }
 
