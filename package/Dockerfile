@@ -29,6 +29,7 @@ RUN apt-get update && \
         netcat \
         netcat-openbsd \
         openssl \
+        openssh-client \
         psmisc \
         socat \
         tcpdump \
