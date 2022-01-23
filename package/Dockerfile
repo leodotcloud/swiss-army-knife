@@ -18,6 +18,7 @@ RUN apt-get update && \
         iptables \
         iputils-ping \
         jq \
+        yq \
         kmod \
         ldap-utils \
         less \
