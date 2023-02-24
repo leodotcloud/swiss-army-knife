@@ -13,7 +13,7 @@ platform:
 
 trigger:
   branch:
-    - master
+    - main
 
 workspace:
   base: /go
@@ -62,7 +62,7 @@ steps:
         - ${DRONE_TAG}
     when:
       branch:
-        - master
+        - main
       event:
         - tag
 
