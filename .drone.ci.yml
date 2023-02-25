@@ -19,6 +19,14 @@ workspace:
   base: /go
   path: src/github.com/leodotcloud/swiss-army-knife
 
+volumes:
+  - name: k3s-run
+    temp:
+      medium: memory
+  - name: k3s-var-run
+    temp:
+      medium: memory
+
 steps:
   - name: version
     image: golang:1.13.9-buster
@@ -47,6 +55,20 @@ steps:
     commands:
       - . ./version.env
       - ./scripts/build
+
+  - name: test-deployment-on-k3s
+    image: rancher/k3s:latest
+    privileged: true
+    volumes:
+      - name: k3s-run
+        path: /run
+      - name: k3s-var-run
+        path: /var/run
+    commands:
+      - pwd
+      - ls
+      - ls -l scripts
+      - sh scripts/test-on-k3s.sh
 
   - name: publish
     image: plugins/docker

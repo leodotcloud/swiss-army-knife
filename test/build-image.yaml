@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: build-image
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: build-image
+          image: gcr.io/kaniko-project/executor:latest
+          args:
+            - "--dockerfile=package/Dockerfile"
+            - "--context=/src"
+            - "--tar-path=/src/swiss.tar.gz"
+            - "--destination=leodotcloud/swiss-army-knife:test"
+            - "--no-push"
+          volumeMounts:
+            - name: source-code
+              mountPath: /src
+      volumes:
+        - name: source-code
+          hostPath:
+            path: /go/src/github.com/leodotcloud/swiss-army-knife
