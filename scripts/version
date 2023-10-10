@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x
+
 # version.env file needs to be generated and sourced in
 # downstream steps as some of the images don't have git
 # and other necessary commands available
