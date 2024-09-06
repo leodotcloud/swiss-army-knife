@@ -12,10 +12,7 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: '^1.13'
-
-      - name: install deps
-        run: go mod tidy && go mod vendor
+          go-version: '1.13.9'
 
       - name: run test
         run: bash scripts/test
