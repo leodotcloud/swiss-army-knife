@@ -12,16 +12,9 @@ jobs:
 
       - uses: actions/setup-go@v5
         with:
-          go-version: '^1.13'
+          go-version: '1.13.9'
 
-      - name: install deps
-        run: go mod tidy && go mod vendor
-
-      - name: get golangci lint
-        run: |
-          curl -LO https://github.com/golangci/golangci-lint/releases/download/v1.24.0/golangci-lint-1.24.0-linux-amd64.tar.gz
-          tar -xzf golangci-lint-1.24.0-linux-amd64.tar.gz
-          mv golangci-lint-1.24.0-linux-amd64/golangci-lint /usr/local/bin/
-
-      - name: run linting
-        run: ./scripts/lint
+      - uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.28.3
+          skip-go-installation: true
