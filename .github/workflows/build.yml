@@ -1,0 +1,40 @@
+name: swiss army knife ci
+
+on:
+  push:
+    branches:
+      - main
+      - add-arm64-support-and-github-action
+    paths-ignore:
+      - .gitignore
+      - README.md
+  pull_request:
+    types:
+      - synchronize
+      - ready_for_review
+
+permissions:
+  issues: write
+  contents: write
+  packages: write
+  pull-requests: write
+
+jobs:
+  version:
+    uses: ./.github/workflows/version.yml
+
+  lint:
+    uses: ./.github/workflows/lint.yml
+
+  test:
+    uses: ./.github/workflows/test.yml
+
+  build:
+    uses: ./.github/workflows/build-app.yml
+    needs:
+      # - lint
+      - test
+      - version
+    with:
+      version: ${{ needs.version.outputs.version }}
+      image_version: ${{ needs.version.outputs.image_version }}
