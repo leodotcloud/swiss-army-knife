@@ -1,3 +1,29 @@
+FROM golang:1.13 as builder
+
+ARG version
+
+WORKDIR /opt/app
+
+COPY go.mod go.sum ./
+
+RUN go mod tidy
+
+COPY vendor ./vendor
+COPY server ./server
+COPY scripts ./scripts
+COPY main.go .
+
+RUN ls -l &&\
+    touch scripts/version &&\
+    cd scripts &&\
+    OS=linux\
+    ARCH=$(dpkg --print-architecture)\
+    CGO_ENABLED=0\
+    GOFLAGS='-mod=vendor'\
+    VERSION=${version}\
+    VERSION_SET=true\
+    bash build
+
 FROM ubuntu:18.04
 RUN sed -i 's:^path-exclude=/usr/share/man:#path-exclude=/usr/share/man:' /etc/dpkg/dpkg.cfg.d/excludes
 RUN apt-get update && \
@@ -62,6 +88,6 @@ COPY configs/vim/vimrc /etc/vim/vimrc
 
 ENV LOGLEVEL_TAG v0.1.2
 RUN curl -sfSL https://github.com/rancher/loglevel/releases/download/${LOGLEVEL_TAG}/loglevel-$(dpkg --print-architecture)-${LOGLEVEL_TAG}.tar.gz | tar xvzf - -C /usr/bin
-COPY swiss-army-knife /usr/bin/
+COPY --from=builder /opt/app/swiss-army-knife /usr/bin/
 WORKDIR /root
 CMD ["swiss-army-knife"]
