@@ -32,7 +32,7 @@ jobs:
   build:
     uses: ./.github/workflows/build-app.yml
     needs:
-      # - lint
+      - lint
       - test
       - version
     with:
