@@ -1,0 +1,5 @@
+" Swiss Army Knife default Vim settings
+" Show absolute and relative line numbers
+set number
+set relativenumber
+
