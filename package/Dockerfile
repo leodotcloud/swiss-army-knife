@@ -23,6 +23,7 @@ RUN apt-get update && \
         ldap-utils \
         less \
         libpcap-dev \
+        sysstat \
         man \
         manpages-posix \
         mtr \
