@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 RUN sed -i 's:^path-exclude=/usr/share/man:#path-exclude=/usr/share/man:' /etc/dpkg/dpkg.cfg.d/excludes
 RUN apt-get update && \
     export DEBIAN_FRONTEND=noninteractive && \
@@ -14,7 +14,6 @@ RUN apt-get update && \
         iperf \
         iperf3 \
         iproute2 \
-        ipsec-tools \
         ipset \
         iptables \
         iputils-ping \
@@ -44,7 +43,6 @@ RUN apt-get update && \
         vim \
         wget && \
     rm -rf /var/lib/apt/lists/* && \
-    mv /usr/sbin/tcpdump /usr/bin/tcpdump && \
     mv /usr/sbin/traceroute /usr/bin/traceroute && \
     curl -sLf https://get.docker.com/builds/Linux/x86_64/docker-1.10.3 > /usr/bin/docker && \
     chmod +x /usr/bin/docker && \
