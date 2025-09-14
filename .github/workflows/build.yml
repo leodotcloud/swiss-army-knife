@@ -35,6 +35,7 @@ jobs:
       - lint
       - test
       - version
+    secrets: inherit
     with:
       version: ${{ needs.version.outputs.version }}
       image_version: ${{ needs.version.outputs.image_version }}

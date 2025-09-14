@@ -23,9 +23,8 @@ jobs:
 
       - uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ vars.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: build and push docker image
         uses: docker/build-push-action@v5
@@ -33,6 +32,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           file: package/Dockerfile
-          tags: ghcr.io/${{ github.repository }}:${{ inputs.image_version }}
+          tags: ${{ vars.IMAGE_REF }}:${{ inputs.image_version }}
           build-args: |
             version=${{ inputs.version }}
