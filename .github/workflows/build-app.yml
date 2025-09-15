@@ -25,12 +25,13 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+        if: github.ref_name == 'main' || (github.event_name == 'release' && github.event.action == 'published')
 
       - name: build and push docker image
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: ${{ github.ref_name == 'main' || (github.event_name == 'release' && github.event.action == 'published') }}
           file: package/Dockerfile
           tags: ${{ vars.IMAGE_REF }}:${{ inputs.image_version }}
           build-args: |
