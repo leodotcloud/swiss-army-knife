@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - add-arm64-support-and-github-action
     paths-ignore:
       - .gitignore
       - README.md
