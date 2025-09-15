@@ -1,6 +1,9 @@
 name: swiss army knife ci
 
 on:
+  release:
+    types:
+      - published
   push:
     branches:
       - main
@@ -19,9 +22,6 @@ permissions:
   pull-requests: write
 
 jobs:
-  version:
-    uses: ./.github/workflows/version.yml
-
   lint:
     uses: ./.github/workflows/lint.yml
 
@@ -33,8 +33,5 @@ jobs:
     needs:
       - lint
       - test
-      - version
-    secrets: inherit
-    with:
-      version: ${{ needs.version.outputs.version }}
-      image_version: ${{ needs.version.outputs.image_version }}
+    secrets:
+      dockerhub_token: ${{ (github.ref_name == 'main' || (github.event_name == 'release' && github.event.action == 'published')) && secrets.DOCKERHUB_TOKEN || '' }}
